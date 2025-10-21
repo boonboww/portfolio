@@ -1,24 +1,37 @@
 'use server';
 
-import { Resend } from 'resend';
-
-import { env } from '@/env.mjs';
 import { TFormSchema } from '@/lib/form-schema';
-
-const resend = new Resend(env.RESEND_API_KEY);
 
 export const sendEmailAction = async ({ email, message }: TFormSchema) => {
   try {
-    await resend.emails.send({
-      from: 'Contact Form <onboarding@resend.dev>',
-      to: 'anhquan5504@gmail.com',
-      subject: 'Message from contact form',
-      replyTo: email,
-      text: `email: ${email} \nmessage: ${message}`,
+    // Thay thế bằng ACCESS_KEY thật của bạn (sau khi tạo form trên web3forms.com)
+    const WEB3FORM_ACCESS_KEY = process.env.WEB3FORM_ACCESS_KEY;
+
+    if (!WEB3FORM_ACCESS_KEY) {
+      throw new Error('Missing Web3Forms access key.');
+    }
+
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORM_ACCESS_KEY,
+        subject: 'New message from contact form',
+        from_name: email,
+        email,
+        message,
+      }),
     });
 
-    return { data: 'Email sent successfully!' };
-  } catch {
-    return { error: `Something went wrong!` };
+    const data = await res.json();
+
+    if (data.success) {
+      return { data: 'Email sent successfully!' };
+    }
+
+    return { error: data.message || 'Something went wrong!' };
+  } catch (error) {
+    console.error(error);
+    return { error: 'Failed to send message.' };
   }
 };
