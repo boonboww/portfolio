@@ -19,10 +19,7 @@ export const Intro = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          type: 'tween',
-          duration: 0.2,
-        }}
+        transition={{ type: 'tween', duration: 0.2 }}
       >
         <Link
           href="#contact"
@@ -45,20 +42,16 @@ export const Intro = () => {
       <motion.p
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{
-          delay: 0.1,
-        }}
+        transition={{ delay: 0.1 }}
         className="text-muted-foreground max-w-xl"
       >
-        A developer based in Poland. I&#39;m passionate about building web
+        A developer based in Viet Nam. I&#39;m passionate about building web
         applications using Next.js, Node.js, Express.js, and React.
       </motion.p>
       <motion.div
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{
-          delay: 0.1,
-        }}
+        transition={{ delay: 0.1 }}
         className="flex flex-row gap-2"
       >
         <Button asChild size="lg">
